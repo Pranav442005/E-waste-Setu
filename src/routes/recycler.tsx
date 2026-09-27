@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useI18n } from "@/hooks/use-i18n";
 import { useApp } from "@/lib/store";
 
-export const Route = createFileRoute("/receiver")({
+export const Route = createFileRoute("/recycler")({
   component: RecyclerLayout,
 });
 
