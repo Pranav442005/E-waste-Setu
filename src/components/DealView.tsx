@@ -62,7 +62,7 @@ function Row({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receiver" }) {
+export function DealView({ lot, side }: { lot: Lot; side: "collector" | "Recycler" }) {
   const { t } = useI18n();
   const store = useApp();
   const m = material(lot.materialId);
@@ -151,7 +151,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
             <div key={o.id} className="rounded-xl border border-border p-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-medium">
-                  {o.by === "receiver" ? t("offerFrom") : t("counterOfferFrom")} ·{" "}
+                  {o.by === "Recycler" ? t("offerFrom") : t("counterOfferFrom")} ·{" "}
                   {o.actorName}
                 </p>
                 <p className="text-base font-semibold text-primary">
@@ -170,7 +170,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
           ))}
         </div>
 
-        {side === "receiver" && lot.stage === "AVAILABLE" && (
+        {side === "Recycler" && lot.stage === "AVAILABLE" && (
           <div className="space-y-3 border-t border-border pt-4">
             <div className="space-y-2">
               <Label htmlFor="offer">{t("offerAmount")}</Label>
@@ -282,7 +282,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
               <Row label={t("contactNumber")} value={lot.delivery.contact} />
               <Row label={t("status")} value={<StatusBadge stage={lot.stage} />} />
             </>
-          ) : side === "receiver" ? (
+          ) : side === "Recycler" ? (
             <div className="space-y-3">
               <div className="space-y-2">
                 <Label htmlFor="logi">{t("logisticName")}</Label>
@@ -422,7 +422,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
               label={t("verifiedWeightLabel")}
               value={formatKg(lot.verifiedWeight)}
             />
-          ) : side === "receiver" ? (
+          ) : side === "Recycler" ? (
             <div className="space-y-3">
               <div className="space-y-2">
                 <Label htmlFor="vw">{t("verifiedWeightLabel")}</Label>
@@ -465,11 +465,11 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
             value={lot.handoverCollector ? t("yes") : t("waiting")}
           />
           <Row
-            label={t("handoverReceiver")}
-            value={lot.handoverReceiver ? t("yes") : t("waiting")}
+            label={t("handoverRecycler")}
+            value={lot.handoverRecycler ? t("yes") : t("waiting")}
           />
           <p className="text-xs text-muted-foreground">{t("handoverHelp")}</p>
-          {!(side === "collector" ? lot.handoverCollector : lot.handoverReceiver) && (
+          {!(side === "collector" ? lot.handoverCollector : lot.handoverRecycler) && (
             <Button
               className="h-12 w-full"
               disabled={busy === "handover"}
@@ -481,7 +481,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
                 )
               }
             >
-              {side === "collector" ? t("handoverCollector") : t("handoverReceiver")}
+              {side === "collector" ? t("handoverCollector") : t("handoverRecycler")}
             </Button>
           )}
         </Section>
@@ -499,7 +499,7 @@ export function DealView({ lot, side }: { lot: Lot; side: "collector" | "receive
               label={t("paymentMethod")}
               value={lot.paymentMethod === "upi" ? "UPI" : t("bankTransfer")}
             />
-          ) : side === "receiver" ? (
+          ) : side === "Recycler" ? (
             <div className="space-y-3">
               <div className="space-y-2">
                 <Label>{t("paymentMethod")}</Label>

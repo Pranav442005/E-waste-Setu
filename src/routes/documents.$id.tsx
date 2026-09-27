@@ -35,7 +35,7 @@ function Documents() {
   const { doc } = Route.useSearch();
   const { t } = useI18n();
   const router = useRouter();
-  const { lots, collector, receiver } = useApp();
+  const { lots, collector, Recycler } = useApp();
   const lot = lots.find((l) => l.id === id);
   const title = doc === "invoice" ? t("invoice") : doc === "passport" ? t("passport") : t("recyclingRecord");
 
@@ -61,10 +61,10 @@ function Documents() {
             <h3 className="mt-4 font-semibold">{t("collectorSection")}</h3>
             <Row k={t("fullName")} v={lot.collectorName} />
             <Row k={t("mobile")} v={collector.mobile} />
-            <h3 className="mt-4 font-semibold">{t("receiverSection")}</h3>
-            <Row k={t("orgName")} v={lot.receiverName} />
-            <Row k={t("gst")} v={receiver.gst} />
-            <Row k={t("authRef")} v={receiver.authRef} />
+            <h3 className="mt-4 font-semibold">{t("RecyclerSection")}</h3>
+            <Row k={t("orgName")} v={lot.RecyclerName} />
+            <Row k={t("gst")} v={Recycler.gst} />
+            <Row k={t("authRef")} v={Recycler.authRef} />
             <h3 className="mt-4 font-semibold">{t("ewasteDetails")}</h3>
             <Row k={t("material")} v={t(material(lot.materialId).nameKey)} />
             <Row k={t("eeeCode")} v={`${lot.eee} · ${lot.schedule}`} />
@@ -85,7 +85,7 @@ function Documents() {
               </div>
             </div>
             <Row k={t("collectorSection")} v={lot.collectorName} />
-            <Row k={t("receiverSection")} v={lot.receiverName ?? "—"} />
+            <Row k={t("RecyclerSection")} v={lot.RecyclerName ?? "—"} />
             <Row k={t("created")} v={formatDateTime(lot.createdAt)} />
             <DealTimeline lot={lot} />
           </div>
@@ -93,7 +93,7 @@ function Documents() {
           <div>
             <Row k={t("recordId")} v={`REC-${lot.id.slice(4)}`} />
             <Row k={t("lotId")} v={lot.id} />
-            <Row k={t("facility")} v={lot.receiverName} />
+            <Row k={t("facility")} v={lot.RecyclerName} />
             <Row k={t("dateReceived")} v={formatDate(lot.completedAt)} />
             <Row k={t("status")} v={t(lot.recyclingStage === "recycled" ? "recycled" : lot.recyclingStage === "processing" ? "underProcessing" : "received")} />
             <p className="mt-4 text-xs text-muted-foreground">{t("recyclingDisclaimer")}</p>

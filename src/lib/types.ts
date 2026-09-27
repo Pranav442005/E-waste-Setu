@@ -1,6 +1,6 @@
 import type { TKey } from "./i18n";
 
-export type Role = "collector" | "receiver" | "admin";
+export type Role = "collector" | "Recycler" | "admin";
 
 export type CollectorType = "informal" | "institution" | "center";
 
@@ -76,7 +76,7 @@ export type LotItem = {
 
 export type OfferEntry = {
   id: string;
-  by: "receiver" | "collector";
+  by: "Recycler" | "collector";
   actorName: string;
   amount: number;
   message?: string;
@@ -121,11 +121,11 @@ export type Lot = {
   stage: DealStage;
   offers: OfferEntry[];
   agreedPrice?: number;
-  receiverId?: string;
-  receiverName?: string;
+  RecyclerId?: string;
+  RecyclerName?: string;
   delivery?: Delivery;
   handoverCollector?: boolean;
-  handoverReceiver?: boolean;
+  handoverRecycler?: boolean;
   paymentMethod?: "upi" | "bank";
   transactionId?: string;
   invoiceNo?: string;
@@ -147,7 +147,7 @@ export type CollectorProfile = {
   photo?: string;
 };
 
-export type ReceiverProfile = {
+export type RecyclerProfile = {
   id: string;
   orgName: string;
   contactPerson: string;

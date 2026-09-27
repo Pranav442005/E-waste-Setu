@@ -14,15 +14,15 @@ export const Route = createFileRoute("/receiver/")({
       { property: "og:description", content: "Browse e-waste lots and make offers." },
     ],
   }),
-  component: ReceiverHome,
+  component: RecyclerHome,
 });
 
-function ReceiverHome() {
+function RecyclerHome() {
   const { t } = useI18n();
   const navigate = useNavigate();
-  const { receiver, lots, setActiveLot } = useApp();
-  const available = lots.filter((l) => l.stage === "AVAILABLE" || (l.receiverId === receiver.id && ["OFFER_RECEIVED", "NEGOTIATING"].includes(l.stage)));
-  const mine = lots.filter((l) => l.receiverId === receiver.id);
+  const { Recycler, lots, setActiveLot } = useApp();
+  const available = lots.filter((l) => l.stage === "AVAILABLE" || (l.RecyclerId === Recycler.id && ["OFFER_RECEIVED", "NEGOTIATING"].includes(l.stage)));
+  const mine = lots.filter((l) => l.RecyclerId === Recycler.id);
   const stats = [
     { label: t("availableLots"), value: lots.filter((l) => l.stage === "AVAILABLE").length },
     { label: t("activeDeals"), value: mine.filter((l) => l.stage !== "COMPLETED").length },
@@ -30,13 +30,13 @@ function ReceiverHome() {
   ];
   return (
     <div>
-      <PageTitle title={receiver.orgName} description={`${t("processingCapacityShort")}: ${receiver.dailyCapacity} kg/day`} />
+      <PageTitle title={Recycler.orgName} description={`${t("processingCapacityShort")}: ${Recycler.dailyCapacity} kg/day`} />
       <div className="mb-5 grid grid-cols-3 gap-3">
         {stats.map((s) => <Card key={s.label} className="p-3"><p className="text-xs text-muted-foreground">{s.label}</p><p className="text-xl font-semibold">{s.value}</p></Card>)}
       </div>
       <h2 className="mb-3 font-semibold">{t("availableLots")}</h2>
       <div className="grid gap-3 md:grid-cols-2">
-        {available.map((l) => <LotCard key={l.id} lot={l} onOpen={() => { setActiveLot(l.id); navigate({ to: "/receiver/deal" }); }} />)}
+        {available.map((l) => <LotCard key={l.id} lot={l} onOpen={() => { setActiveLot(l.id); navigate({ to: "/Recycler/deal" }); }} />)}
         {!available.length && <p className="text-sm text-muted-foreground">{t("noAvailableLots")}</p>}
       </div>
     </div>

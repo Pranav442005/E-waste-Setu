@@ -15,13 +15,13 @@ export const Route = createFileRoute("/receiver/deal")({
       { property: "og:description", content: "Manage your e-waste deals." },
     ],
   }),
-  component: ReceiverDeal,
+  component: RecyclerDeal,
 });
 
-function ReceiverDeal() {
+function RecyclerDeal() {
   const { t } = useI18n();
-  const { receiver, lots, activeLotId, setActiveLot } = useApp();
-  const options = lots.filter((l) => l.stage === "AVAILABLE" || l.receiverId === receiver.id);
+  const { Recycler, lots, activeLotId, setActiveLot } = useApp();
+  const options = lots.filter((l) => l.stage === "AVAILABLE" || l.RecyclerId === Recycler.id);
   const lot = options.find((l) => l.id === activeLotId);
   return (
     <div>
@@ -32,7 +32,7 @@ function ReceiverDeal() {
           <SelectContent>{options.map((l) => <SelectItem key={l.id} value={l.id}>{l.id}</SelectItem>)}</SelectContent>
         </Select>
       )}
-      {lot ? <DealView lot={lot} side="receiver" /> : <Card className="p-5 text-sm text-muted-foreground">{t("selectLotFirst")}</Card>}
+      {lot ? <DealView lot={lot} side="Recycler" /> : <Card className="p-5 text-sm text-muted-foreground">{t("selectLotFirst")}</Card>}
     </div>
   );
 }

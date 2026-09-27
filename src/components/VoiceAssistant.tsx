@@ -36,7 +36,7 @@ const DEMOS: Demo[] = [
   },
   {
     q: {
-      en: "How does a receiver make an offer?",
+      en: "How does a Recycler make an offer?",
       hi: "प्राप्तकर्ता ऑफ़र कैसे करता है?",
       mr: "प्राप्तकर्ता ऑफर कशी देतो?",
     },

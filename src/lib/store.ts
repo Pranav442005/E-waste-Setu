@@ -5,7 +5,7 @@ import type {
   DealStage,
   Delivery,
   Lot,
-  ReceiverProfile,
+  RecyclerProfile,
   RecyclingStage,
 } from "./types";
 import { material } from "./types";
@@ -46,7 +46,7 @@ const defaultCollector: CollectorProfile = {
   address: "Shop 14, Hadapsar Market Road, Pune 411028",
 };
 
-const defaultReceiver: ReceiverProfile = {
+const defaultRecycler: RecyclerProfile = {
   id: "REC-2001",
   orgName: "GreenCycle Recyclers Pvt Ltd",
   contactPerson: "Anita Deshmukh",
@@ -127,25 +127,25 @@ const seedLots: Lot[] = [
 ];
 
 export type AuthState = {
-  role: "collector" | "receiver" | "admin" | null;
+  role: "collector" | "Recycler" | "admin" | null;
 };
 
 type State = {
   lang: Lang;
   auth: AuthState;
   collector: CollectorProfile;
-  receiver: ReceiverProfile;
+  Recycler: RecyclerProfile;
   lots: Lot[];
   activeLotId: string | null;
 
   setLang: (l: Lang) => void;
-  login: (role: "collector" | "receiver" | "admin") => void;
+  login: (role: "collector" | "Recycler" | "admin") => void;
   logout: () => void;
   setActiveLot: (id: string | null) => void;
 
   updateCollector: (patch: Partial<CollectorProfile>) => void;
   setCollectorPhoto: (photo?: string) => void;
-  updateReceiver: (patch: Partial<ReceiverProfile>) => void;
+  updateRecycler: (patch: Partial<RecyclerProfile>) => void;
 
   addLot: (lot: Lot) => void;
   patchLot: (id: string, patch: Partial<Lot>) => void;
@@ -154,13 +154,13 @@ type State = {
   makeOffer: (id: string, amount: number, message: string) => void;
   counterOffer: (
     id: string,
-    by: "collector" | "receiver",
+    by: "collector" | "Recycler",
     amount: number,
     message: string,
   ) => void;
   respondOffer: (id: string, offerId: string, outcome: "accepted" | "declined") => void;
   scheduleDelivery: (id: string, delivery: Delivery) => void;
-  confirmHandover: (id: string, side: "collector" | "receiver") => void;
+  confirmHandover: (id: string, side: "collector" | "Recycler") => void;
   setRecyclingStage: (id: string, stage: RecyclingStage) => void;
 };
 
@@ -170,7 +170,7 @@ export const useApp = create<State>()(
       lang: "en",
       auth: { role: null },
       collector: defaultCollector,
-      receiver: defaultReceiver,
+      Recycler: defaultRecycler,
       lots: seedLots,
       activeLotId: null,
 
@@ -183,7 +183,7 @@ export const useApp = create<State>()(
         set((s) => ({ collector: { ...s.collector, ...patch } })),
       setCollectorPhoto: (photo) =>
         set((s) => ({ collector: { ...s.collector, photo } })),
-      updateReceiver: (patch) => set((s) => ({ receiver: { ...s.receiver, ...patch } })),
+      updateRecycler: (patch) => set((s) => ({ Recycler: { ...s.Recycler, ...patch } })),
 
       addLot: (lot) => set((s) => ({ lots: [lot, ...s.lots], activeLotId: lot.id })),
 
@@ -209,20 +209,20 @@ export const useApp = create<State>()(
         })),
 
       makeOffer: (id, amount, message) => {
-        const r = get().receiver;
+        const r = get().Recycler;
         set((s) => ({
           lots: s.lots.map((l) =>
             l.id === id
               ? {
                   ...l,
-                  receiverId: r.id,
-                  receiverName: r.orgName,
+                  RecyclerId: r.id,
+                  RecyclerName: r.orgName,
                   stage: "OFFER_RECEIVED",
                   offers: [
                     ...l.offers,
                     {
                       id: `OF-${Date.now()}`,
-                      by: "receiver",
+                      by: "Recycler",
                       actorName: r.orgName,
                       amount,
                       message,
@@ -239,7 +239,7 @@ export const useApp = create<State>()(
       counterOffer: (id, by, amount, message) => {
         const state = get();
         const actorName =
-          by === "collector" ? state.collector.name : state.receiver.orgName;
+          by === "collector" ? state.collector.name : state.Recycler.orgName;
         set((s) => ({
           lots: s.lots.map((l) =>
             l.id === id
@@ -294,9 +294,9 @@ export const useApp = create<State>()(
             const next = {
               ...l,
               handoverCollector: side === "collector" ? true : l.handoverCollector,
-              handoverReceiver: side === "receiver" ? true : l.handoverReceiver,
+              handoverRecycler: side === "Recycler" ? true : l.handoverRecycler,
             };
-            if (next.handoverCollector && next.handoverReceiver) {
+            if (next.handoverCollector && next.handoverRecycler) {
               next.stage = "HANDOVER_CONFIRMED";
               next.timeline = [
                 ...l.timeline,

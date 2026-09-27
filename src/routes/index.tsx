@@ -21,7 +21,7 @@ function Landing() {
   const { t } = useI18n();
   const roles = [
     { role: "collector", icon: Users, title: t("roleCollector"), text: t("collectorPitch") },
-    { role: "receiver", icon: Building2, title: t("roleReceiver"), text: t("receiverPitch") },
+    { role: "Recycler", icon: Building2, title: t("roleRecycler"), text: t("RecyclerPitch") },
     { role: "admin", icon: ShieldCheck, title: t("roleAdmin"), text: t("adminConsole") },
   ] as const;
   return (

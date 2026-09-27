@@ -27,8 +27,8 @@ const stages: { s: RecyclingStage; k: "received" | "underProcessing" | "recycled
 
 function Recycling() {
   const { t } = useI18n();
-  const { receiver, lots, setRecyclingStage } = useApp();
-  const done = lots.filter((l) => l.receiverId === receiver.id && l.stage === "COMPLETED");
+  const { Recycler, lots, setRecyclingStage } = useApp();
+  const done = lots.filter((l) => l.RecyclerId === Recycler.id && l.stage === "COMPLETED");
   return (
     <div>
       <PageTitle title={t("recyclingRecord")} description={t("recyclingDisclaimer")} />

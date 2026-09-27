@@ -14,16 +14,16 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useApp } from "@/lib/store";
 import { EEE_CATEGORIES, type CollectorType, type EeeCode } from "@/lib/types";
 
-type Role = "collector" | "receiver" | "admin";
+type Role = "collector" | "Recycler" | "admin";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { role: Role } => ({
-    role: s.role === "receiver" || s.role === "admin" ? s.role : "collector",
+    role: s.role === "Recycler" || s.role === "admin" ? s.role : "collector",
   }),
   head: () => ({
     meta: [
       { title: "Sign in — E_WASTE SETU" },
-      { name: "description", content: "Log in or create a collector or receiver account on E_WASTE SETU." },
+      { name: "description", content: "Log in or create a collector or Recycler account on E_WASTE SETU." },
       { property: "og:title", content: "Sign in — E_WASTE SETU" },
       { property: "og:description", content: "Log in or sign up on E_WASTE SETU." },
     ],
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-const home = { collector: "/collector", receiver: "/receiver", admin: "/admin" } as const;
+const home = { collector: "/collector", Recycler: "/Recycler", admin: "/admin" } as const;
 
 function F({ id, label, ...p }: { id: string; label: string } & React.ComponentProps<typeof Input>) {
   return (
@@ -46,7 +46,7 @@ function AuthPage() {
   const { role } = Route.useSearch();
   const { t } = useI18n();
   const nav = useNavigate();
-  const { login, updateCollector, updateReceiver } = useApp();
+  const { login, updateCollector, updateRecycler } = useApp();
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [f, setF] = useState<Record<string, string>>({});
@@ -70,18 +70,18 @@ function AuthPage() {
     if (need.some((k) => !f[k]?.trim())) return toast.error(t("errRequired"));
     if (!/^\d{10}$/.test(f.mobile)) return toast.error(t("errMobile"));
     if (f.email && !/^\S+@\S+\.\S+$/.test(f.email)) return toast.error(t("errEmail"));
-    if (role === "receiver" && !cats.length) return toast.error(t("errCategory"));
+    if (role === "Recycler" && !cats.length) return toast.error(t("errCategory"));
     if (!agree) return toast.error(t("errTerms"));
     if (role === "collector") {
       updateCollector({ name: f.name, mobile: f.mobile, email: f.email ?? "", city: f.city, address: f.address ?? "", type: ctype, upi: f.upi });
     } else {
-      updateReceiver({ orgName: f.org, contactPerson: f.contact, mobile: f.mobile, email: f.email ?? "", city: f.city, address: f.address ?? "", gst: f.gst, authRef: f.auth, categories: cats });
+      updateRecycler({ orgName: f.org, contactPerson: f.contact, mobile: f.mobile, email: f.email ?? "", city: f.city, address: f.address ?? "", gst: f.gst, authRef: f.auth, categories: cats });
     }
     toast.success(t("toastAccountCreated"));
     go();
   };
 
-  const title = role === "collector" ? t("roleCollector") : role === "receiver" ? t("roleReceiver") : t("roleAdmin");
+  const title = role === "collector" ? t("roleCollector") : role === "Recycler" ? t("roleRecycler") : t("roleAdmin");
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,7 +158,7 @@ function AuthPage() {
                 {t("agreeTerms")}
               </label>
               <Button className="h-12 w-full text-base" onClick={doSignup}>
-                {role === "collector" ? t("createCollectorAccount") : t("createReceiverAccount")}
+                {role === "collector" ? t("createCollectorAccount") : t("createRecyclerAccount")}
               </Button>
             </TabsContent>
           </Tabs>

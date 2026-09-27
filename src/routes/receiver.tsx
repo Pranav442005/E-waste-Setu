@@ -6,22 +6,22 @@ import { useI18n } from "@/hooks/use-i18n";
 import { useApp } from "@/lib/store";
 
 export const Route = createFileRoute("/receiver")({
-  component: ReceiverLayout,
+  component: RecyclerLayout,
 });
 
-function ReceiverLayout() {
+function RecyclerLayout() {
   const { t } = useI18n();
   const logout = useApp((s) => s.logout);
   const navigate = useNavigate();
   const nav = [
-    { to: "/receiver", label: t("navAvailable"), icon: Package },
-    { to: "/receiver/deal", label: t("navDeals"), icon: ArrowLeftRight },
-    { to: "/receiver/recycling", label: t("navRecycling"), icon: Recycle },
+    { to: "/Recycler", label: t("navAvailable"), icon: Package },
+    { to: "/Recycler/deal", label: t("navDeals"), icon: ArrowLeftRight },
+    { to: "/Recycler/recycling", label: t("navRecycling"), icon: Recycle },
   ];
   return (
     <AppShell
       nav={nav}
-      subtitle={t("roleReceiver")}
+      subtitle={t("roleRecycler")}
       headerRight={
         <Button variant="ghost" size="icon" aria-label={t("logout")} onClick={() => { logout(); navigate({ to: "/" }); }}>
           <LogOut className="h-5 w-5" />
