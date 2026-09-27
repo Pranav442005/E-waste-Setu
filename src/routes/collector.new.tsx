@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Camera, FileSpreadsheet, MapPin, Sparkles, X } from "lucide-react";
+import { Camera, FileSpreadsheet, MapPin, Sparkles, Upload, X } from "lucide-react";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
 import { PageTitle } from "@/components/AppShell";
@@ -258,25 +258,46 @@ function NewLot() {
             </Button>
           </div>
         ) : (
-          <label className="flex h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border text-sm text-muted-foreground">
-            <Camera className="h-6 w-6" />
+          <div className="grid grid-cols-2 gap-3">
+            <label className="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-4 text-center text-sm text-muted-foreground transition-colors hover:bg-muted/50">
+              <Camera className="h-6 w-6 text-primary" />
+              <span className="font-medium text-foreground">Take Photo</span>
+              <span className="text-xs">{t("photoHelp")}</span>
 
-            {t("photoHelp")}
+              <input
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={async (e) => {
+                  const f = e.target.files?.[0];
+                  if (f) {
+                    await handlePhotoUpload(f);
+                    e.currentTarget.value = "";
+                  }
+                }}
+              />
+            </label>
 
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              className="hidden"
-              onChange={async (e) => {
-                const f = e.target.files?.[0];
+            <label className="flex min-h-32 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border p-4 text-center text-sm text-muted-foreground transition-colors hover:bg-muted/50">
+              <Upload className="h-6 w-6 text-primary" />
+              <span className="font-medium text-foreground">Upload Photo</span>
+              <span className="text-xs">Choose from gallery</span>
 
-                if (f) {
-                  await handlePhotoUpload(f);
-                }
-              }}
-            />
-          </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={async (e) => {
+                  const f = e.target.files?.[0];
+                  if (f) {
+                    await handlePhotoUpload(f);
+                    e.currentTarget.value = "";
+                  }
+                }}
+              />
+            </label>
+          </div>
         )}
 
         {/* =========================================
